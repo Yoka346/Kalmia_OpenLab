@@ -1,0 +1,13 @@
+{
+    "Label": "Grandmaster",
+    "Description": "大会で上位を狙える方向け",
+    "WinMessage": "本気のKalmiaに挑んでみては？",
+    "DrawMessage": "もしかして高段者！？",
+    "LossMessage": "挑戦しただけでも見事です",
+    "Config": {
+        "PlayoutNum": 320000,
+        "StochasticMoveNum": 10,
+        "ThreadNum": 0,
+        "EnableExtraSearch": true
+    }
+}

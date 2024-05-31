@@ -1,0 +1,13 @@
+{
+    "Label": "Normal",
+    "Description": "標準的な難易度",
+    "WinMessage": "脱入門者!!",
+    "DrawMessage": "あと少し!",
+    "LossMessage": "石の数にこだわらずに、相手の置ける場所を増やさないように心がけてみよう",
+    "Config": {
+        "PlayoutNum": 320,
+        "StochasticMoveNum": 0,
+        "ThreadNum": 0,
+        "ReuseSubtree": false
+    }
+}

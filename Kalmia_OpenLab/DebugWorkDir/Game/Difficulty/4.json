@@ -1,0 +1,13 @@
+{
+    "Label": "Kalmia",
+    "Description": "限界を超えた強さを体験したい方向け",
+    "WinMessage": "間違いなくあなたは世界最高レベルの強さです",
+    "DrawMessage": "読みが正確すぎ!",
+    "LossMessage": "挑戦しただけでもすごいです",
+    "Config": {
+        "PlayoutNum": 9600000,
+        "StochasticMoveNum": 5,
+        "ThreadNum": 0,
+        "EnableExtraSearch": true
+    }
+}
