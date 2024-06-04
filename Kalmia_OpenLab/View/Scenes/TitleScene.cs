@@ -44,7 +44,16 @@ namespace Kalmia_OpenLab.View.Scenes
             AudioMixer.PlayChannel(-1, GlobalSE.ButtonPressSE, 0);
 
             var selectedItem = sender.SelectedItem;
-            var nextScene = (selectedItem == "Start") ? new TitleScene() : null; // 本来は次のシーンに遷移. 現在は暫定的にTitleSceneに再遷移.
+
+            UserControl? nextScene;
+            if (selectedItem == "Start")
+                nextScene = new DifficultySelectionScene();
+            else if (selectedItem == "About Research")
+                nextScene = new PosterScene();
+            else
+                nextScene = null;
+
+
             this.fadeOut.OnEndAnimation += (sender, e) =>
             {
                 if (this.Parent is not MainForm)

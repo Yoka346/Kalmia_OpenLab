@@ -1,13 +1,8 @@
 {
-    "Label": "Kalmia",
-    "Description": "限界を超えた強さを体験したい方向け",
-    "WinMessage": "間違いなくあなたは世界最高レベルの強さです",
-    "DrawMessage": "読みが正確すぎ!",
-    "LossMessage": "挑戦しただけでもすごいです",
-    "Config": {
-        "PlayoutNum": 9600000,
-        "StochasticMoveNum": 5,
-        "ThreadNum": 0,
-        "EnableExtraSearch": true
-    }
+    "Label": "Superhuman",
+    "Description": "超人的な強さを体験したい人向け(10手読み、終盤20手完全読み)",
+    "WinMessage": "世界大会で優勝を狙ってみては？",
+    "DrawMessage": "世界大会に出られますよ",
+    "LossMessage": "負けるのが普通です",
+    "Level": 10
 }

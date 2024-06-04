@@ -33,10 +33,19 @@ namespace Kalmia_OpenLab
         /// </summary>
         private void InitializeComponent(UserControl initialControl)
         {
-            this.ClientSize = new Size(GlobalConfig.Instance.ScreenWidth, GlobalConfig.Instance.ScreenHeight);
-            this.MinimumSize = this.MaximumSize = this.ClientSize;
-            this.MinimizeBox = this.MaximizeBox = false;
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            if (GlobalConfig.Instance.FullScreen)
+            {
+                this.FormBorderStyle = FormBorderStyle.None;
+                this.WindowState = FormWindowState.Maximized;
+                this.ClientSize = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            }
+            else
+            {
+                this.ClientSize = new Size(GlobalConfig.Instance.ScreenWidth, GlobalConfig.Instance.ScreenHeight);
+                this.MinimizeBox = this.MaximizeBox = false;
+                this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            }
+            
             this.BackColor = Color.Black;
             initialControl.AutoSize = false;
             initialControl.Size = this.ClientSize;

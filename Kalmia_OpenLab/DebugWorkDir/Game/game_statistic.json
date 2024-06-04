@@ -1,1 +1,32 @@
-{}
+{
+  "Grandmaster": {
+    "HumanWinCount": 3,
+    "HumanDrawCount": 0,
+    "HumanLossCount": 3,
+    "TotalPlayCount": 6
+  },
+  "Casual": {
+    "HumanWinCount": 0,
+    "HumanDrawCount": 0,
+    "HumanLossCount": 9,
+    "TotalPlayCount": 9
+  },
+  "Superhuman": {
+    "HumanWinCount": 5,
+    "HumanDrawCount": 3,
+    "HumanLossCount": 10,
+    "TotalPlayCount": 18
+  },
+  "Normal": {
+    "HumanWinCount": 1,
+    "HumanDrawCount": 0,
+    "HumanLossCount": 1,
+    "TotalPlayCount": 2
+  },
+  "Hard": {
+    "HumanWinCount": 0,
+    "HumanDrawCount": 0,
+    "HumanLossCount": 1,
+    "TotalPlayCount": 1
+  }
+}

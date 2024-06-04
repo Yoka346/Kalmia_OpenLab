@@ -1,13 +1,8 @@
 {
     "Label": "Normal",
-    "Description": "標準的な難易度",
+    "Description": "標準的な難易度(2手読み、終盤4手完全読み)",
     "WinMessage": "脱入門者!!",
-    "DrawMessage": "あと少し!",
-    "LossMessage": "石の数にこだわらずに、相手の置ける場所を増やさないように心がけてみよう",
-    "Config": {
-        "PlayoutNum": 320,
-        "StochasticMoveNum": 0,
-        "ThreadNum": 0,
-        "ReuseSubtree": false
-    }
+    "DrawMessage": "あと少しで脱入門者",
+    "LossMessage": "相手が石を置ける場所を減らすことを心がけてみよう",
+    "Level": 2
 }

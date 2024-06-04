@@ -21,7 +21,7 @@ namespace Kalmia_OpenLab
         public void ChangeUserControl(UserControl? control)
         {
             this.Controls[^1].Hide();
-            this.Controls[^1].Dispose();    // ‚È‚ñ‚ÅDispose?
+            this.Controls[^1].Dispose();    
 
             if(control is null)
             {

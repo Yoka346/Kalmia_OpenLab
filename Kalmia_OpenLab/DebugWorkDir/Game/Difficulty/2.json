@@ -1,13 +1,8 @@
 {
     "Label": "Hard",
-    "Description": "オセロに自身がある方向け",
+    "Description": "オセロに自身がある方向け(4手読み、終盤8手完全読み)",
     "WinMessage": "もしかして有段者!?",
     "DrawMessage": "惜しい! でもすごく強い!",
-    "LossMessage": "諦めずにガンバレ!",
-    "Config": {
-        "PlayoutNum": 3200,
-        "StochasticMoveNum": 0,
-        "ThreadNum": 0,
-        "ReuseSubtree": false
-    }
+    "LossMessage": "まずはNormalに安定して勝てるようになろう",
+    "Level": 4
 }

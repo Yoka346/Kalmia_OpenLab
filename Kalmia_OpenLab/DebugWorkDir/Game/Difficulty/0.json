@@ -1,13 +1,8 @@
 {
     "Label": "Casual",
-    "Description": "オセロが苦手な方向け",
+    "Description": "入門者向け(1手読み、終盤2手完全読み)",
     "WinMessage": "コツはつかめたかな? 次はNormalに挑戦してみよう!!",
     "DrawMessage": "惜しい・・・",
-    "LossMessage": "隅を相手に取られないように考えてみよう",
-    "Config": {
-        "PlayoutNum": 1,
-        "StochasticMoveNum": 0,
-        "ThreadNum": 0,
-        "ReuseSubtree": false
-    }
+    "LossMessage": "序盤のうちは自分の石を増やしすぎないようにしよう",
+    "Level": 1
 }

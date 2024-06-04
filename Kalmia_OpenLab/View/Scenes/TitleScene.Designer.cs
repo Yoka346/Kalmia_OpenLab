@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
+using System.Windows.Forms;
 
 using Kalmia_OpenLab.View.Controls;
 
@@ -28,18 +29,19 @@ namespace Kalmia_OpenLab.View.Scenes
         {
             components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-
-            // View
             this.BackColor = Color.Black;
-            this.Width = GlobalConfig.Instance.ScreenWidth;
-            this.Height = GlobalConfig.Instance.ScreenHeight;
+
+            if(GlobalConfig.Instance.FullScreen)
+                this.Size = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            else
+                this.Size = new Size(GlobalConfig.Instance.ScreenWidth, GlobalConfig.Instance.ScreenHeight);
 
             // Controls
 
             // Heading
             this.headingLabel = new TransparentLabel
             {
-                Text = "オセロAI",
+                Text = "リバーシAI",
                 ForeColor = Color.White,
                 Location = new Point(0, this.Height / 10),
                 Size = new Size(this.Width, this.Height / 5),
@@ -52,11 +54,11 @@ namespace Kalmia_OpenLab.View.Scenes
             // Subheading
             this.subheadingLabel = new TransparentLabel
             {
-                Text = "~2024卒 卒業研究~",
+                Text = "~リバーシにおける人間の知識を用いない特徴量の自動設計~",
                 ForeColor = Color.FromArgb(0, Color.White),
                 Size = new Size(this.Width, this.Height / 8),
                 Location = new Point(0, this.headingLabel.Location.Y + this.headingLabel.Height),
-                Font = new Font(GlobalConfig.Instance.DefaultFontFamily, this.Height / 15, FontStyle.Italic, GraphicsUnit.Pixel),
+                Font = new Font(GlobalConfig.Instance.DefaultFontFamily, this.Height / 16, FontStyle.Italic, GraphicsUnit.Pixel),
                 TextAlign = ContentAlignment.MiddleCenter,
                 BackColor = Color.Transparent
             };
@@ -64,7 +66,7 @@ namespace Kalmia_OpenLab.View.Scenes
 
             // SelectMenu
             this.selectMenu = new SelectMenu<string>(this.Width / 3, this.Height / 5, this.Width / 3, (int)(3.5f * this.Height / 5.0f));
-            this.selectMenu.AddItemRange(new string[] { "Start", "Quit" });
+            this.selectMenu.AddItemRange(new string[] { "Start", "About Research", "Quit" });
             this.Controls.Add(selectMenu);
 
             // Animations
