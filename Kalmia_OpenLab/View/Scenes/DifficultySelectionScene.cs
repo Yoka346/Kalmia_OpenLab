@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Kalmia_OpenLab.Model.Game;
 using Kalmia_OpenLab.SDLWrapper;
 
 using Kalmia_OpenLab.View.Controls;
@@ -25,16 +26,20 @@ namespace Kalmia_OpenLab.View.Scenes
         public string DrawMessage { get; set; } = string.Empty;
         public string LossMessage { get; set; } = string.Empty;
         public int Level { get; set; } = 1;
+        public int TTSize { get; set; } = 1024;
 
         public override string ToString() => this.Label;
     }
 
-    public partial class DifficultySelectionScene : UserControl
+    internal partial class DifficultySelectionScene : UserControl
     {
         bool transitionToNextScene = false;
 
-        public DifficultySelectionScene()
+        GameType gameType;
+
+        public DifficultySelectionScene(GameType gameType)
         {
+            this.gameType = gameType;   
             InitializeComponent();
             this.Controls.HideAll();
         }
@@ -83,7 +88,7 @@ namespace Kalmia_OpenLab.View.Scenes
                     return;
 
                 var mainForm = (MainForm)this.Parent;
-                mainForm.Invoke(() => mainForm.ChangeUserControl(new DiscSelectionScene(sender.Items[selectedIdx])));
+                mainForm.Invoke(() => mainForm.ChangeUserControl(new DiscSelectionScene(this.gameType, sender.Items[selectedIdx])));
             };
 
             this.transitionToNextScene = true;

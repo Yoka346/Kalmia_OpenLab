@@ -41,7 +41,7 @@ namespace Kalmia_OpenLab.View.Scenes
             // Heading
             this.headingLabel = new TransparentLabel
             {
-                Text = "リバーシAI",
+                Text = "オセロAI",
                 ForeColor = Color.White,
                 Location = new Point(0, this.Height / 10),
                 Size = new Size(this.Width, this.Height / 5),

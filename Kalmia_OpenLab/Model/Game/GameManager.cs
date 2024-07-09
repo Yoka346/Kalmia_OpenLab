@@ -22,11 +22,18 @@ namespace Kalmia_OpenLab.Model.Game
 
     internal delegate void GameEventHandler(GameManager sender, GameEventArgs e);
 
+    internal enum GameType
+    {
+        Normal,
+        Weakest
+    }
+
     /// <summary>
     /// 対局の管理を行うクラス.
     /// </summary>
     internal class GameManager
     {
+        public GameType GameType { get; }
         public IPlayer BlackPlayer { get; }
         public IPlayer WhitePlayer { get; }
         public IPlayer? CurrentPlayer { get; private set; }
@@ -46,8 +53,9 @@ namespace Kalmia_OpenLab.Model.Game
         Position pos;
         bool suspendFlag = false;
 
-        public GameManager(IPlayer blackPlayer, IPlayer whitePlayer)
+        public GameManager(GameType gameType, IPlayer blackPlayer, IPlayer whitePlayer)
         {
+            this.GameType = gameType;   
             this.BlackPlayer = blackPlayer;
             this.WhitePlayer = whitePlayer;
             this.pos = new Position();
@@ -74,6 +82,14 @@ namespace Kalmia_OpenLab.Model.Game
             var startTime = Environment.TickCount;
             while (this.NowPlaying && Environment.TickCount - startTime < 10000)
                 Thread.Yield();
+        }
+
+        public GameResult GetGameResult()
+        {
+            var result = this.pos.GetGameResult();
+            if (this.GameType == GameType.Weakest && !result.Draw)
+                result.Winner = (DiscColor)(-(int)result.Winner);
+            return result;
         }
 
         void Mainloop()
@@ -131,7 +147,7 @@ namespace Kalmia_OpenLab.Model.Game
 
             this.NowPlaying = false;
 
-            var result = this.pos.GetGameResult();
+            var result = GetGameResult();
             IPlayer? winner;
             if (result.Draw)
                 winner = null;

@@ -24,6 +24,7 @@ namespace Kalmia_OpenLab.View.Scenes
         TransparentLabel searchInfoLabel;
         TransparentLabel messageLabel;
         TransparentLabel situationLabel;
+        TransparentLabel gameTypeLabel;
         TransparentLabel difficultyLabel;
         TransparentLabel blackPlayerNameLabel;
         TransparentLabel whitePlayerNameLabel;
@@ -134,6 +135,23 @@ namespace Kalmia_OpenLab.View.Scenes
                 Font = new Font(GlobalConfig.Instance.DefaultFontFamily, messageLabelHeight * 0.5f, GraphicsUnit.Pixel)
             };
             this.Controls.Add(this.situationLabel);
+
+            // GameType label
+            this.gameTypeLabel = new TransparentLabel
+            {
+                Location = new Point
+                {
+                    X = this.situationLabel.Location.X,
+                    Y = this.situationLabel.Location.Y + this.situationLabel.Height + this.Height / 25
+                },
+                Size = new Size((int)(this.Width * 0.3), messageLabelHeight),
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                TextAlign = ContentAlignment.MiddleCenter,
+                AutoSize = false,
+                Font = new Font(GlobalConfig.Instance.DefaultFontFamily, messageLabelHeight * 0.35f, GraphicsUnit.Pixel)
+            };
+            this.Controls.Add(this.gameTypeLabel);
 
             // Difficulty label
             this.difficultyLabel = new TransparentLabel

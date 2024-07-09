@@ -47,7 +47,7 @@ namespace Kalmia_OpenLab.View.Scenes
 
             UserControl? nextScene;
             if (selectedItem == "Start")
-                nextScene = new DifficultySelectionScene();
+                nextScene = new GameTypeSelectionScene();
             else if (selectedItem == "About Research")
                 nextScene = new PosterScene();
             else

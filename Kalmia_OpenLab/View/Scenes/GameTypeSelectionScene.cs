@@ -15,17 +15,12 @@ using Kalmia_OpenLab.View.Controls;
 
 namespace Kalmia_OpenLab.View.Scenes
 {
-    internal partial class DiscSelectionScene : UserControl
+    internal partial class GameTypeSelectionScene : UserControl
     {
         bool transitionToNextScene = false;
 
-        GameType gameType;
-        Difficulty difficulty;
-
-        public DiscSelectionScene(GameType gameType, Difficulty difficulty)
+        public GameTypeSelectionScene()
         {
-            this.gameType = gameType;
-            this.difficulty = difficulty;
             InitializeComponent();
             this.Controls.HideAll();
         }
@@ -36,7 +31,7 @@ namespace Kalmia_OpenLab.View.Scenes
             this.Controls.ShowAll();
         }
 
-        void SelectMenu_OnSelectedIdxChanged(SelectMenu<DiscColor> sender, int selectedIdx)
+        void SelectMenu_OnSelectedIdxChanged(SelectMenu<string> sender, int selectedIdx)
         {
             if (this.transitionToNextScene)
                 return;
@@ -49,14 +44,13 @@ namespace Kalmia_OpenLab.View.Scenes
 
             AudioMixer.PlayChannel(-1, GlobalSE.CursorSE);
 
-            var disc = sender.SelectedItem;
-            if (disc == DiscColor.Black)
-                this.descriptionLabel.Text = "先手";
-            else if (disc == DiscColor.White)
-                this.descriptionLabel.Text = "後手";
+            if (sender.SelectedIdx == 0)
+                this.descriptionLabel.Text = "石が多いほうが勝つ通常ルール";
+            else if (sender.SelectedIdx == 1)
+                this.descriptionLabel.Text = "石が少ないほうが勝つ特殊ルール! 普通のオセロとは異なる戦略が必要";
         }
 
-        void SelectMenu_OnLeftClickItem(SelectMenu<DiscColor> sender, int selectedIdx)
+        void SelectMenu_OnLeftClickItem(SelectMenu<string> sender, int selectedIdx)
         {
             if (this.transitionToNextScene)
                 return;
@@ -67,8 +61,8 @@ namespace Kalmia_OpenLab.View.Scenes
             {
                 if (this.Parent is MainForm mainForm)
                 {
-                    var gameSceneConstructor = () => new GameScene(this.gameType, this.difficulty, sender.Items[selectedIdx]);
-                    Invoke(() => mainForm.ChangeUserControl(new LoadingScene(gameSceneConstructor)));
+                    var gameType = (selectedIdx == 0) ? GameType.Normal : GameType.Weakest;
+                    Invoke(() => mainForm.ChangeUserControl(new DifficultySelectionScene(gameType)));
                 }
             };
 

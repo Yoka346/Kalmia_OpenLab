@@ -4,5 +4,6 @@
     "WinMessage": "世界大会で優勝を狙ってみては？",
     "DrawMessage": "世界大会に出られますよ",
     "LossMessage": "負けるのが普通です",
-    "Level": 10
+    "Level": 14,
+    "TTSize": 4096
 }

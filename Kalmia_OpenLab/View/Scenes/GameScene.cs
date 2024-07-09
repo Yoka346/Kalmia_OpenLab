@@ -51,7 +51,7 @@ namespace Kalmia_OpenLab.View.Scenes
         MixerChunk gameOverSE;
         MixerChunk cutInSE;
 
-        public GameScene(Difficulty difficulty, DiscColor discColor)
+        public GameScene(GameType gameType, Difficulty difficulty, DiscColor discColor)
         {
             this.gameRecords = LoadGameRecords();
             this.gameStats = LoadGameStats();
@@ -63,8 +63,8 @@ namespace Kalmia_OpenLab.View.Scenes
             this.cutInSE = MixerChunk.LoadWav($"{FilePath.SEDirPath}cut_in.ogg");
             this.putDiscSE = MixerChunk.LoadWav($"{FilePath.SEDirPath}put_disc.ogg");
 
-            var players = InitPlayers(difficulty, this.humanDiscColor);
-            this.gameManager = new GameManager(players.black, players.white);
+            var players = InitPlayers(gameType, difficulty, this.humanDiscColor);
+            this.gameManager = new GameManager(gameType, players.black, players.white);
 
             InitializeComponent();
             this.Controls.HideAll();
@@ -119,11 +119,22 @@ namespace Kalmia_OpenLab.View.Scenes
             sw.WriteLine(JsonSerializer.Serialize(stats, new JsonSerializerOptions { WriteIndented = true }));
         }
 
-        (IPlayer black, IPlayer white) InitPlayers(Difficulty difficulty, DiscColor humanDiscColor)
+        (IPlayer black, IPlayer white) InitPlayers(GameType gameType, Difficulty difficulty, DiscColor humanDiscColor)
         {
-            var enginePath = $"{FilePath.EngineDirPath}/Kalmia.exe";
+            string enginePath, workDir;
+            if(gameType == GameType.Normal)
+            {
+                enginePath = $"{FilePath.EngineDirPath}/Kalmia.exe";
+                workDir = FilePath.EngineDirPath;
+            }
+            else
+            {
+                enginePath = $"{FilePath.EngineDirPath}/Weakest/Kalmia.exe";
+                workDir = $"{FilePath.EngineDirPath}/Weakest";
+            }
+
             var human = new HumanPlayer("You", humanDiscColor);
-            var engine = new EnginePlayer(enginePath, "", FilePath.EngineDirPath, difficulty.Level, (DiscColor)((int)humanDiscColor));
+            var engine = new EnginePlayer(enginePath, "", workDir, difficulty.Level, [$"set option tt_size_mib {difficulty.TTSize}"], (DiscColor)((int)humanDiscColor));
             engine.OnNodeStatsRecieved += Engine_OnNodeStatsRecieved;
             engine.OnSearchInfoRecieved += Engine_OnSearchInfoRecieved;
             engine.OnUnexpectedShutdownOccured += Engine_OnUnexpectedShutdownOccured;
@@ -179,8 +190,7 @@ namespace Kalmia_OpenLab.View.Scenes
         {
             if (this.Parent is MainForm mainForm)
             {
-                var pos = this.gameManager.GetPosition();
-                var result = pos.GetGameResult();
+                var result = this.gameManager.GetGameResult();
                 string message;
                 string bgmPath;
                 if (result.Draw)
@@ -366,10 +376,7 @@ namespace Kalmia_OpenLab.View.Scenes
             ((HumanPlayer)this.gameManager.CurrentPlayer).SetHumanInput(coord);
         }
 
-        void NextSceneLabel_MouseEnter(object? sender, EventArgs e)
-        {
-            this.blinkNextSceneLabel.Stop();
-        }
+        void NextSceneLabel_MouseEnter(object? sender, EventArgs e) => this.blinkNextSceneLabel.Stop();
 
         void NextSceneLabel_MouseLeave(object? sender, EventArgs e)
             => this.blinkNextSceneLabel.AnimateForDuration(GlobalConfig.Instance.AnimationFrameIntervalMs, int.MaxValue);
@@ -438,6 +445,7 @@ namespace Kalmia_OpenLab.View.Scenes
             {
                 this.discCountLabel.Text = $"{this.gameManager.BlackDiscCount}-{this.gameManager.WhiteDiscCount}";
                 this.sideToMoveLabel.Text = $"Turn: {this.gameManager.CurrentPlayer?.Name}";
+                this.gameTypeLabel.Text = $"GameType: {this.gameManager.GameType}";
                 this.difficultyLabel.Text = $"Difficulty: {this.difficulty.Label}";
             }
         }

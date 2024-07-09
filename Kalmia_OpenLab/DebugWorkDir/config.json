@@ -1,7 +1,7 @@
 {
   "WorkDirPath": "",
   "DefaultFontFamily": "Arial",
-  "FullScreen": true,
+  "FullScreen": false,
   "ScreenWidth": 1280,
   "ScreenHeight": 720,
   "AspectRatio": 1.7777778,

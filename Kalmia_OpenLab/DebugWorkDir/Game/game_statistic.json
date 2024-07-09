@@ -2,31 +2,31 @@
   "Grandmaster": {
     "HumanWinCount": 3,
     "HumanDrawCount": 0,
-    "HumanLossCount": 3,
-    "TotalPlayCount": 6
+    "HumanLossCount": 7,
+    "TotalPlayCount": 10
   },
   "Casual": {
-    "HumanWinCount": 0,
+    "HumanWinCount": 2,
     "HumanDrawCount": 0,
-    "HumanLossCount": 9,
-    "TotalPlayCount": 9
+    "HumanLossCount": 14,
+    "TotalPlayCount": 16
   },
   "Superhuman": {
-    "HumanWinCount": 5,
+    "HumanWinCount": 11,
     "HumanDrawCount": 3,
-    "HumanLossCount": 10,
-    "TotalPlayCount": 18
+    "HumanLossCount": 29,
+    "TotalPlayCount": 43
   },
   "Normal": {
-    "HumanWinCount": 1,
+    "HumanWinCount": 4,
     "HumanDrawCount": 0,
-    "HumanLossCount": 1,
-    "TotalPlayCount": 2
+    "HumanLossCount": 3,
+    "TotalPlayCount": 7
   },
   "Hard": {
-    "HumanWinCount": 0,
+    "HumanWinCount": 2,
     "HumanDrawCount": 0,
-    "HumanLossCount": 1,
-    "TotalPlayCount": 1
+    "HumanLossCount": 5,
+    "TotalPlayCount": 7
   }
 }

@@ -26,9 +26,9 @@ namespace Kalmia_OpenLab.Model.Game
 
         readonly NBoardEngine engine;
 
-        public EnginePlayer(string enginePath, string engineArgs, string engineWorkDir, int level, DiscColor discColor)
+        public EnginePlayer(string enginePath, string engineArgs, string engineWorkDir, int level, IEnumerable<string> initialCommands, DiscColor discColor)
         {
-            this.engine = new NBoardEngine(enginePath, engineArgs, engineWorkDir, []);
+            this.engine = new NBoardEngine(enginePath, engineArgs, engineWorkDir, initialCommands);
             this.engine.OnNodeStatsRecieved += (s, e) => this.OnNodeStatsRecieved.Invoke(this, e);
             this.engine.OnSearchInfoRecieved += (s, e) => this.OnSearchInfoRecieved.Invoke(this, e);
             this.engine.ExitedUnexpectedly += (s, e) => this.OnUnexpectedShutdownOccured.Invoke(this, e);
