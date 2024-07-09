@@ -1,8 +1,0 @@
-{
-    "Label": "Hard",
-    "Description": "オセロに自身がある方向け(4手読み、終盤8手完全読み)",
-    "WinMessage": "もしかして有段者!?",
-    "DrawMessage": "惜しい! でもすごく強い!",
-    "LossMessage": "まずはNormalに安定して勝てるようになろう",
-    "Level": 4
-}

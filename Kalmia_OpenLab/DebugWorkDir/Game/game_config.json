@@ -1,8 +1,0 @@
-{
-  "EvaluatorOptions": {
-    "PlayoutNum": 9600000,
-    "NodeNumLimit": 200000000,
-    "ThreadNum": 0,
-    "SendInformationIntervalCs": 10
-  }
-}

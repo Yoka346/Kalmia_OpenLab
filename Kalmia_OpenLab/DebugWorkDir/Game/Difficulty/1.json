@@ -1,8 +1,0 @@
-{
-    "Label": "Normal",
-    "Description": "標準的な難易度(2手読み、終盤4手完全読み)",
-    "WinMessage": "脱入門者!!",
-    "DrawMessage": "あと少しで脱入門者",
-    "LossMessage": "相手が石を置ける場所を減らすことを心がけてみよう",
-    "Level": 2
-}

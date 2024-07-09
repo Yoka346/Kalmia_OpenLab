@@ -1,8 +1,0 @@
-{
-    "Label": "Grandmaster",
-    "Description": "大会で上位を狙える方向け(6手読み、終盤12手完全読み)",
-    "WinMessage": "大会で優勝を狙えるレベルです",
-    "DrawMessage": "引き分けに持ち込めるだけでも見事！",
-    "LossMessage": "ナイストライ！",
-    "Level": 6
-}
