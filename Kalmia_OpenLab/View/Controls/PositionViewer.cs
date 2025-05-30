@@ -11,10 +11,18 @@ namespace Kalmia_OpenLab.View.Controls
     {
         Position pos;
 
+        public PositionViewer() : this(new Position()) { }
+
         public PositionViewer(Position pos)
         {
             this.pos = pos;
             InitializeComponent();
+        }
+
+        public void SetPosition(Position pos)
+        {
+            this.pos = new(pos);
+            this.posDisplay.Invalidate();
         }
 
         public bool Update(BoardCoordinate move)

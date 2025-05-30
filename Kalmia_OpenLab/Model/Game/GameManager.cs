@@ -53,12 +53,20 @@ namespace Kalmia_OpenLab.Model.Game
         Position pos;
         bool suspendFlag = false;
 
-        public GameManager(GameType gameType, IPlayer blackPlayer, IPlayer whitePlayer)
+        public GameManager(GameType gameType, IPlayer blackPlayer, IPlayer whitePlayer, int numHandicapDiscs)
         {
             this.GameType = gameType;   
             this.BlackPlayer = blackPlayer;
             this.WhitePlayer = whitePlayer;
+
             this.pos = new Position();
+            if (numHandicapDiscs > 0)
+            {
+                var handicapCoords = new BoardCoordinate[] { BoardCoordinate.A1, BoardCoordinate.H8, BoardCoordinate.H1, BoardCoordinate.A8 };
+                foreach (var coord in handicapCoords[..numHandicapDiscs])
+                    pos.PutDisc(DiscColor.Black, coord);
+                pos.SideToMove = DiscColor.White;
+            }
         }
 
         ~GameManager() => Dispose();
@@ -106,8 +114,18 @@ namespace Kalmia_OpenLab.Model.Game
             this.WhitePlayer.SetGame(gameInfo);
 
             this.NowPlaying = true;
-            this.CurrentPlayer = this.BlackPlayer;
-            this.OpponentPlayer = this.WhitePlayer;
+
+            if (pos.SideToMove == DiscColor.Black)
+            {
+                this.CurrentPlayer = this.BlackPlayer;
+                this.OpponentPlayer = this.WhitePlayer;
+            }
+            else
+            {
+                this.CurrentPlayer = this.WhitePlayer;
+                this.OpponentPlayer = this.BlackPlayer;
+            }
+
             while (!pos.GetGameResult().GameOver)
             {
                 if (this.suspendFlag)

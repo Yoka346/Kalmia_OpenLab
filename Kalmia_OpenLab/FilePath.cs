@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Kalmia_OpenLab
+﻿namespace Kalmia_OpenLab
 {
     internal class FilePath
     {
@@ -16,7 +10,7 @@ namespace Kalmia_OpenLab
 
         // Game
         public static string GameDirPath { get; } = "Game/";
-        public static string DifficultyDirPath => $"{GameDirPath}Difficulty";
+        public static string DifficultyDirPath => $"{GameDirPath}Difficulty/";
         public static string GameConfigFilePath => $"{GameDirPath}game_config.json";
         public static string GameStatisticFilePath => $"{GameDirPath}game_statistic.json";
         public static string GameRecordFilePath => $"{GameDirPath}game_record.json";

@@ -53,7 +53,7 @@ namespace Kalmia_OpenLab.Model.Reversi
             (DiscColor.White, BoardCoordinate.D4), (DiscColor.White, BoardCoordinate.E5)
         };
 
-        public DiscColor SideToMove { get; private set; }
+        public DiscColor SideToMove { get; set; }
         public bool CanPass => CalculateMobility(this.SideToMove).Length == 0;
         public ReadOnlyCollection<Move> MoveHistroy => new(this.moveHistroy);
 
@@ -106,6 +106,8 @@ namespace Kalmia_OpenLab.Model.Reversi
                     count++;
             return count;
         }
+
+        public void PutDisc(DiscColor color, BoardCoordinate coord) => this.discs[(int)coord] = color;
 
         public BoardCoordinate[]? Update(BoardCoordinate move)
         {

@@ -21,10 +21,10 @@ namespace Kalmia_OpenLab.View.Scenes
     internal class Difficulty
     {
         public string Label { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public string WinMessage { get; set; } = string.Empty;
-        public string DrawMessage { get; set; } = string.Empty;
-        public string LossMessage { get; set; } = string.Empty;
+        public string[] Descriptions { get; set; } = [string.Empty, string.Empty];
+        public string[] WinMessages { get; set; } = [string.Empty, string.Empty];
+        public string[] DrawMessages { get; set; } = [string.Empty, string.Empty];
+        public string[] LossMessages { get; set; } = [string.Empty, string.Empty];
         public int Level { get; set; } = 1;
         public int TTSize { get; set; } = 1024;
 
@@ -47,14 +47,16 @@ namespace Kalmia_OpenLab.View.Scenes
         static IEnumerable<Difficulty> LoadDifficulties()
         {
             var count = 0;
-            foreach (var files in Directory.GetFiles(FilePath.DifficultyDirPath))
-                if (Path.GetFileName(files) == $"{count}.json")
+            foreach (var file in Directory.GetFiles(FilePath.DifficultyDirPath))
+            {
+                if (Path.GetFileName(file) == $"{count}.json")
                 {
-                    var difficulty = JsonSerializer.Deserialize<Difficulty>(File.ReadAllText(files));
+                    var difficulty = JsonSerializer.Deserialize<Difficulty>(File.ReadAllText(file));
                     if (difficulty is not null)
                         yield return difficulty;
                     count++;
                 }
+            }
         }
 
         void DifficultySelectionScene_Load(object sender, EventArgs e)
@@ -72,7 +74,7 @@ namespace Kalmia_OpenLab.View.Scenes
 
             if (selectedIdx != -1)
                 AudioMixer.PlayChannel(-1, GlobalSE.CursorSE);
-            this.descriptionLabel.Text = sender.SelectedItem?.Description;
+            this.descriptionLabel.Text = sender.SelectedItem?.Descriptions[(this.gameType == GameType.Normal) ? 0 : 1];
         }
 
         void SelectMenu_OnLeftClickItem(SelectMenu<Difficulty> sender, int selectedIdx)

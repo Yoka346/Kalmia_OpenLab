@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
@@ -51,7 +50,7 @@ namespace Kalmia_OpenLab.View.Scenes
         MixerChunk gameOverSE;
         MixerChunk cutInSE;
 
-        public GameScene(GameType gameType, Difficulty difficulty, DiscColor discColor)
+        public GameScene(GameType gameType, Difficulty difficulty, DiscColor discColor, int numHandicapDiscs = 0)
         {
             this.gameRecords = LoadGameRecords();
             this.gameStats = LoadGameStats();
@@ -63,8 +62,8 @@ namespace Kalmia_OpenLab.View.Scenes
             this.cutInSE = MixerChunk.LoadWav($"{FilePath.SEDirPath}cut_in.ogg");
             this.putDiscSE = MixerChunk.LoadWav($"{FilePath.SEDirPath}put_disc.ogg");
 
-            var players = InitPlayers(gameType, difficulty, this.humanDiscColor);
-            this.gameManager = new GameManager(gameType, players.black, players.white);
+            var players = InitPlayers(gameType, difficulty, this.humanDiscColor, numHandicapDiscs);
+            this.gameManager = new GameManager(gameType, players.black, players.white, numHandicapDiscs);
 
             InitializeComponent();
             this.Controls.HideAll();
@@ -75,9 +74,7 @@ namespace Kalmia_OpenLab.View.Scenes
             try
             {
                 var ret = JsonSerializer.Deserialize<List<GameRecord>>(File.ReadAllText(FilePath.GameRecordFilePath));
-                if (ret is null)
-                    throw new NullReferenceException();
-                return ret;
+                return ret is null ? throw new NullReferenceException() : ret;
             }
             catch (Exception ex) when (ex is FileNotFoundException || ex is JsonException || ex is NullReferenceException)
             {
@@ -100,9 +97,7 @@ namespace Kalmia_OpenLab.View.Scenes
             try
             {
                 var ret = JsonSerializer.Deserialize<Dictionary<string, GameStatistic>>(File.ReadAllText(FilePath.GameStatisticFilePath));
-                if (ret is null)
-                    throw new NullReferenceException();
-                return ret;
+                return ret is null ? throw new NullReferenceException() : ret;
             }
             catch (Exception ex) when (ex is FileNotFoundException || ex is JsonException || ex is NullReferenceException)
             {
@@ -119,13 +114,20 @@ namespace Kalmia_OpenLab.View.Scenes
             sw.WriteLine(JsonSerializer.Serialize(stats, new JsonSerializerOptions { WriteIndented = true }));
         }
 
-        (IPlayer black, IPlayer white) InitPlayers(GameType gameType, Difficulty difficulty, DiscColor humanDiscColor)
+        (IPlayer black, IPlayer white) InitPlayers(GameType gameType, Difficulty difficulty, DiscColor humanDiscColor, int numHandicapDiscs)
         {
             string enginePath, workDir;
             if(gameType == GameType.Normal)
             {
                 enginePath = $"{FilePath.EngineDirPath}/Kalmia.exe";
-                workDir = FilePath.EngineDirPath;
+                if (numHandicapDiscs == 0)
+                {
+                    workDir = FilePath.EngineDirPath;
+                }
+                else
+                {
+                    workDir = $"{FilePath.EngineDirPath}Handicap/{numHandicapDiscs}";
+                }
             }
             else
             {
@@ -143,8 +145,6 @@ namespace Kalmia_OpenLab.View.Scenes
 
         void GameScene_Load(object sender, EventArgs e)
         {
-            if (this.gameManager.BlackPlayer is HumanPlayer)
-                this.posViewer.ShowLegalMovePointers = true;
             this.messageLabel.Text = "対局開始!!";
             this.blackPlayerNameLabel.Text = this.gameManager.BlackPlayer.Name;
             this.whitePlayerNameLabel.Text = this.gameManager.WhitePlayer.Name;
@@ -193,19 +193,20 @@ namespace Kalmia_OpenLab.View.Scenes
                 var result = this.gameManager.GetGameResult();
                 string message;
                 string bgmPath;
+                var gameType = (this.gameManager.GameType == GameType.Normal) ? 0 : 1;
                 if (result.Draw)
                 {
-                    message = this.difficulty.DrawMessage;
+                    message = this.difficulty.DrawMessages[gameType];
                     bgmPath = $"{FilePath.BGMDirPath}draw.ogg";
                 }
                 else if (result.Winner == this.humanDiscColor)
                 {
-                    message = this.difficulty.WinMessage;
+                    message = this.difficulty.WinMessages[gameType];
                     bgmPath = $"{FilePath.BGMDirPath}win.ogg";
                 }
                 else
                 {
-                    message = this.difficulty.LossMessage;
+                    message = this.difficulty.LossMessages[gameType];
                     bgmPath = $"{FilePath.BGMDirPath}loss.ogg";
                 }
                 mainForm.ChangeUserControl(new ResultScene(message, this.gameManager.GetPosition(), bgmPath));   
@@ -220,6 +221,9 @@ namespace Kalmia_OpenLab.View.Scenes
             this.gameManager.Start();
             Invoke(InitLabelsText);
             this.cutOut.OnEndAnimation -= StartGame;
+
+            this.posViewer.ShowLegalMovePointers = this.gameManager.CurrentPlayer is HumanPlayer;
+            this.posViewer.SetPosition(this.gameManager.GetPosition());
         }
 
         void GameManager_OnSideToMoveChanged(GameManager sender, GameEventArgs e)
@@ -311,14 +315,15 @@ namespace Kalmia_OpenLab.View.Scenes
                 Debug.Assert(e.Winner is not null);
 
                 record.WinnerName = e.Winner.Name;
+                var weakest = this.gameManager.GameType == GameType.Weakest;
                 if (e.Winner is HumanPlayer)
                 {
-                    this.messageLabel.Text = "You Win!!";
+                    this.messageLabel.Text = !weakest ? "You Win!!" : "You Lose...";
                     gameStat.HumanWinCount++;
                 }
                 else
                 {
-                    this.messageLabel.Text = "You Lose...";
+                    this.messageLabel.Text = !weakest ? "You Lose..." : "You Win!!";
                     gameStat.HumanLossCount++;
                 }
             }
@@ -351,6 +356,9 @@ namespace Kalmia_OpenLab.View.Scenes
 
             var winRate = (int)(searchInfo.Eval + 50.0f);
             if (player != this.gameManager.CurrentPlayer)
+                winRate = 100 - winRate;
+
+            if (this.gameManager.GameType == GameType.Weakest)
                 winRate = 100 - winRate;
 
             if (player == this.gameManager.BlackPlayer)

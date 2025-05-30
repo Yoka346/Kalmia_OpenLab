@@ -47,7 +47,7 @@ namespace Kalmia_OpenLab.View.Scenes
             if (sender.SelectedIdx == 0)
                 this.descriptionLabel.Text = "石が多いほうが勝つ通常ルール";
             else if (sender.SelectedIdx == 1)
-                this.descriptionLabel.Text = "石が少ないほうが勝つ特殊ルール! 普通のオセロとは異なる戦略が必要";
+                this.descriptionLabel.Text = "絶対にあなたが勝ってしまう究極の接待オセロ！負けたら逆にすごい";
         }
 
         void SelectMenu_OnLeftClickItem(SelectMenu<string> sender, int selectedIdx)
@@ -62,7 +62,10 @@ namespace Kalmia_OpenLab.View.Scenes
                 if (this.Parent is MainForm mainForm)
                 {
                     var gameType = (selectedIdx == 0) ? GameType.Normal : GameType.Weakest;
-                    Invoke(() => mainForm.ChangeUserControl(new DifficultySelectionScene(gameType)));
+                    if(gameType == GameType.Weakest) 
+                        Invoke(() => mainForm.ChangeUserControl(new DifficultySelectionScene(gameType)));
+                    else
+                        Invoke(() => mainForm.ChangeUserControl(new HandicapSelectionScene()));
                 }
             };
 
