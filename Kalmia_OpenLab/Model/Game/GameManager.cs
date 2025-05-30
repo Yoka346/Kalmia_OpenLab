@@ -80,27 +80,8 @@ namespace Kalmia_OpenLab.Model.Game
         }
 
         public Position GetPosition() => new(this.pos);
-        public void Start() => Task.Run(Mainloop);
-        public void Pause() => this.Paused = true;
-        public void Resume() => this.Paused = false;
 
-        public void Suspend()
-        {
-            this.suspendFlag = true;
-            var startTime = Environment.TickCount;
-            while (this.NowPlaying && Environment.TickCount - startTime < 10000)
-                Thread.Yield();
-        }
-
-        public GameResult GetGameResult()
-        {
-            var result = this.pos.GetGameResult();
-            if (this.GameType == GameType.Weakest && !result.Draw)
-                result.Winner = (DiscColor)(-(int)result.Winner);
-            return result;
-        }
-
-        void Mainloop()
+        public void Start()
         {
             var gameInfo = new GameInfo
             {
@@ -125,7 +106,30 @@ namespace Kalmia_OpenLab.Model.Game
                 this.CurrentPlayer = this.WhitePlayer;
                 this.OpponentPlayer = this.BlackPlayer;
             }
+            Task.Run(() => Mainloop(gameInfo));
+        }
 
+        public void Pause() => this.Paused = true;
+        public void Resume() => this.Paused = false;
+
+        public void Suspend()
+        {
+            this.suspendFlag = true;
+            var startTime = Environment.TickCount;
+            while (this.NowPlaying && Environment.TickCount - startTime < 10000)
+                Thread.Yield();
+        }
+
+        public GameResult GetGameResult()
+        {
+            var result = this.pos.GetGameResult();
+            if (this.GameType == GameType.Weakest && !result.Draw)
+                result.Winner = (DiscColor)(-(int)result.Winner);
+            return result;
+        }
+
+        void Mainloop(GameInfo gameInfo)
+        {
             while (!pos.GetGameResult().GameOver)
             {
                 if (this.suspendFlag)
@@ -135,7 +139,7 @@ namespace Kalmia_OpenLab.Model.Game
                 }
                 WaitForResume();
 
-                var move = this.CurrentPlayer.GenerateMove();
+                var move = this.CurrentPlayer!.GenerateMove();
 
                 if (this.suspendFlag)
                 {
@@ -149,7 +153,7 @@ namespace Kalmia_OpenLab.Model.Game
 
                 this.pos.Update(move);
                 this.CurrentPlayer.UpdateGame(move);
-                this.OpponentPlayer.UpdateGame(move);
+                this.OpponentPlayer!.UpdateGame(move);
 
                 if (this.CurrentPlayer == this.BlackPlayer)
                     this.OnPlayBlack.Invoke(this, new GameEventArgs(move, null, null));

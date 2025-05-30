@@ -222,8 +222,8 @@ namespace Kalmia_OpenLab.View.Scenes
             Invoke(InitLabelsText);
             this.cutOut.OnEndAnimation -= StartGame;
 
-            this.posViewer.ShowLegalMovePointers = this.gameManager.CurrentPlayer is HumanPlayer;
             this.posViewer.SetPosition(this.gameManager.GetPosition());
+            this.posViewer.ShowLegalMovePointers = this.gameManager.CurrentPlayer is HumanPlayer;
         }
 
         void GameManager_OnSideToMoveChanged(GameManager sender, GameEventArgs e)
@@ -238,7 +238,7 @@ namespace Kalmia_OpenLab.View.Scenes
                     //    engine.StartAnalyzing();
 
                     var winRates = this.winRateFigure.BlackWinRates;
-                    this.winRateFigure.AddBlackWinRate((winRates.Count > 1) ? winRates[^1] : 50.0f);
+                    this.winRateFigure.AddBlackWinRate((winRates.Count >= 1) ? winRates[^1] : 50.0f);
                     InitLabelsText();
                 }
             });
